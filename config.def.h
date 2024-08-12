@@ -66,14 +66,15 @@ static const char unknown_str[] = "n/a";
 
 static const char vol[]         = "[ `amixer sget Master | tail -n 1 | awk '{print $6;}'` = \"[on]\" ] \
                                    && printf \"`amixer sget Master | tail -n 1 | awk '{print $5;}' | grep -Po '\\[\\K[^%]*'`%%\" \
-                                   || printf 'Off'"; 
+                                   || printf 'Off'";
 
 static const struct arg args[] = {
 	/* function format          argument */
-	{ wifi_perc, " %s%% ", "wlp4s0" },
+  { check_updates, "󰚰 %s ", NULL},
+	{ wifi_perc, "   %s%% ", "wlp4s0" },
 	{ battery_perc, "   %s%%", "BAT0" },
 	{ battery_remaining, "(%s) ", "BAT0" },
 	{ run_command, "  %s%% ", "light -G" },
-	{ run_command, "  %s ", vol },
+	{ run_command, "   %s ", vol },
 	{ datetime, "%s", "  %a %e %B  %R" },
 };

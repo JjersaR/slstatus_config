@@ -11,6 +11,9 @@
 #include "slstatus.h"
 #include "util.h"
 
+/* Declaración de la función check_updates */
+const char *check_updates(const char *unused);
+
 struct arg {
 	const char *(*func)(const char *);
 	const char *fmt;
@@ -42,6 +45,28 @@ static void
 usage(void)
 {
 	die("usage: %s [-s] [-1]", argv0);
+}
+
+const char *
+check_updates(const char *unused)
+{
+  static char updates[5];
+  FILE *fp = popen("dnf check-update | grep -E '^[[:alnum:]]' | wc -l", "r");
+
+  if(fp == NULL)
+    return "n/a";
+
+  if (fgets(updates, sizeof(updates), fp) == NULL) {
+    pclose(fp);
+    return "n/a";
+  }
+
+  pclose(fp);
+
+  updates[strcspn(updates, "\n")] = 0;
+
+  /* Retorna el número de actualizaciones pendientes */
+  return updates;
 }
 
 int
